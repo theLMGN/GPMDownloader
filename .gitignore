@@ -105,3 +105,4 @@ venv.bak/
 
 authentication.py
 output
+.DS_Store
