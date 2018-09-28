@@ -4,14 +4,17 @@ import json
 from downloader import download
 from tagger import gpm
 from authentication import *
+from notification import *
 import os
+import time
 
 api = Mobileclient()
 playlistName = PLAYLISTNAME
 logged_in = api.login(GPMEMAIL,GPMPASSWORD,ANDROIDID)
 
-
+notify("Starting","Downloading " + playlistName)
 def plist(plist):
+    startTime = time.time()
     print("Starting on " + plist["name"])
     i = 0
     for sog in plist["tracks"]:
@@ -22,15 +25,20 @@ def plist(plist):
             if os.path.isfile("output/" + song["albumArtist"] + "/" + song["album"] + "/" + song["title"] + ".mp3"):
                 print("Already exists.")
             else:
+                notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])
                 download(api.get_stream_url(song["storeId"]),"cache/" + song["storeId"] + ".mp3")
                 print("  Downloading album art")
                 download(song["albumArtRef"][0]["url"], "cache/" + song["storeId"] + ".png")
                 print("  Tagging")
                 gpm(song, "cache/" + song["storeId"] + ".png", "cache/" + song["storeId"] + ".mp3")
         except:
-            print("Failed on a song ???")
+            tn = "a song"
+            if "title" in sog:
+                tn = sog["title"]
+            print("Failed on " + tn)
+
             print(sog["trackId"])
-            
+    notify("Done downloading","Downloaded " + str(i) + " tracks in " + str(time.time() - startTime) + "s")
         
         
 
