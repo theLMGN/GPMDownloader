@@ -1,6 +1,6 @@
 from mutagen.mp3 import MP3
 from mutagen.id3 import error
-from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, APIC
+from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, APIC,TRCK
 import os
 def dir(folder):
     if not os.path.exists(folder):
@@ -13,13 +13,17 @@ def gpm(track,albumArt,song):
         print("has tags")
 
     try:
+        tags["TRCK"] = TRCK(encoding=3, text=str(track["trackNumber"]))
+    except:
+        print("  !!! Failed to add track no")
+    try:
         tags["TIT2"] = TIT2(encoding=3, text=track["title"])
     except:
         print("  !!! Failed to add title")
     try:
         tags["TALB"] = TALB(encoding=3, text=track["album"])
     except:
-        print("  !!! Failed to add albumArtist")
+        print("  !!! Failed to add album")
     try:
         tags["COMM"] = COMM(encoding=3, lang=u'eng', desc='desc', text=u'Downloaded from GPM')
     except:
@@ -27,7 +31,11 @@ def gpm(track,albumArt,song):
     try:
         tags["TPE1"] = TPE1(encoding=3, text=track["artist"])
     except:
-        print("  !!! Failed to add arist")
+        print("  !!! Failed to add artist")
+    try:
+        tags["TPE2"] = TPE2(encoding=3, text="Various Artists")
+    except:
+        print("  !!! Failed to add album artist")
     try:
         tags["TCOM"] = TCOM(encoding=3, text=track["composer"])
     except:

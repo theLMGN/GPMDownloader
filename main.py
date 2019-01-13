@@ -31,12 +31,12 @@ def plist(plist):
                 download(song["albumArtRef"][0]["url"], "cache/" + song["storeId"] + ".png")
                 print("  Tagging")
                 gpm(song, "cache/" + song["storeId"] + ".png", "cache/" + song["storeId"] + ".mp3")
-        except:
+        except Exception as e:
             tn = "a song"
             if "title" in sog:
                 tn = sog["title"]
             print("Failed on " + tn)
-
+            print(e)
             print(sog["trackId"])
     notify("Done downloading","Downloaded " + str(i) + " tracks in " + str(time.time() - startTime) + "s")
         
