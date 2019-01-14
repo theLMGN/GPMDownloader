@@ -56,10 +56,10 @@ def gpm(track,albumArt,song):
             desc=u'Cover',
             data=open(albumArt,"rb").read()
         )
-    output = "output/" + track["albumArtist"] + "/" + track["album"].replace("/", "").replace("|", "").replace(":","") + "/" + track["title"] + ".mp3"
+    output = "output/" + track["albumArtist"] + "/" + track["album"].translate(str.maketrans('','',"/?<>\\:*|\"")) + "/" + track["title"] + ".mp3"
     dir("output")
     dir("output/" + track["albumArtist"])
-    dir("output/" + track["albumArtist"] + "/" + track["album"].replace("/", "").replace("|", "").replace(":", ""))
+    dir("output/" + track["albumArtist"] + "/" + track["album"].translate(str.maketrans('','',"/?<>\\:*|\"")) )
     tags.save(song)
     os.rename(song, output)
     os.remove(albumArt)
