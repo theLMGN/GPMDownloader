@@ -61,8 +61,8 @@ def gpm(track,albumArt,song):
         )
     output = "output/" + makeClean(track["albumArtist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"
     dir("output")
-    dir("output/" +  makeClean(track["artist"]))
-    dir("output/" +  makeClean(track["artist"]) + "/" + makeClean(track["albumArtist"]) )
+    dir("output/" +  makeClean(track["albumArtist"]))
+    dir("output/" +  makeClean(track["albumArtist"]) + "/" + makeClean(track["album"]) )
     tags.save(song)
     os.rename(song, output)
     os.remove(albumArt)
