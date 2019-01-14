@@ -2,8 +2,9 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import error
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, APIC,TRCK
 import os
+import re
 def makeClean(path):
-    return path.translate(str.maketrans('','',"/?<>\\:*|\""))
+    return re.sub(r"[\W ]", '', path)
 def dir(folder):
     if not os.path.exists(folder):
         os.makedirs(folder)

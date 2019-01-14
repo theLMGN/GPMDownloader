@@ -8,6 +8,10 @@ from notification import *
 import os
 import time
 
+try:
+    os.rmdir("cache")
+os.makedirs("cache")
+
 api = Mobileclient()
 playlistName = PLAYLISTNAME
 logged_in = api.login(GPMEMAIL,GPMPASSWORD,ANDROIDID)
@@ -32,12 +36,9 @@ def plist(plist):
                 print("  Tagging")
                 gpm(song, "cache/" + song["storeId"] + ".png", "cache/" + song["storeId"] + ".mp3")
         except Exception as e:
-            tn = "a song"
-            if "title" in sog:
-                tn = sog["title"]
-            print("Failed on " + tn)
             print(e)
-            print(sog["trackId"])
+            print("Waiting a second before continuing")
+            sleep(2)
     notify("Done downloading","Downloaded " + str(i) + " tracks in " + str(time.time() - startTime) + "s")
         
         
