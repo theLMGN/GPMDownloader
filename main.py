@@ -31,7 +31,7 @@ def plist(plist):
             song = sog["track"]
             track = sog["track"]
             print("[" + str(i) + "/" + str(len(plist["tracks"])) + " " + str(int((i / len(plist["tracks"])) * 100)) + "%] Downloading " +  song["title"] + " by " + song["artist"])
-            if os.path.isfile( "output/" + makeClean(track["artist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"):
+            if os.path.isfile( "output/" + makeClean(track["albumArtist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"):
                 print("Already exists.")
             else:
                 notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])

@@ -59,7 +59,7 @@ def gpm(track,albumArt,song):
             desc=u'Cover',
             data=open(albumArt,"rb").read()
         )
-    output = "output/" + makeClean(track["artist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"
+    output = "output/" + makeClean(track["albumArtist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"
     dir("output")
     dir("output/" +  makeClean(track["artist"]))
     dir("output/" +  makeClean(track["artist"]) + "/" + makeClean(track["album"]) )
