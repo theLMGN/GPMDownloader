@@ -6,12 +6,14 @@ from tagger import gpm
 from authentication import *
 from notification import *
 import os
+import shutil
 import time
 
 try:
-    os.rmdir("cache")
-except:
+    shutil.rmtree("cache")
+except Exception as e:
     print("failed to delete cache, probably nothing to worry about")
+    print(e)
 os.makedirs("cache")
 
 api = Mobileclient()
@@ -40,7 +42,7 @@ def plist(plist):
         except Exception as e:
             print(e)
             print("Waiting a second before continuing")
-            sleep(2)
+            time.sleep(2)
     notify("Done downloading","Downloaded " + str(i) + " tracks in " + str(time.time() - startTime) + "s")
         
         
