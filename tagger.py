@@ -2,6 +2,8 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import error
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, APIC,TRCK
 import os
+def makeClean(path):
+    return path.translate(str.maketrans('','',"/?<>\\:*|\""))
 def dir(folder):
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -33,7 +35,7 @@ def gpm(track,albumArt,song):
     except:
         print("  !!! Failed to add artist")
     try:
-        tags["TPE2"] = TPE2(encoding=3, text="Various Artists")
+        tags["TPE2"] = TPE2(encoding=3, text=track["albumArtist"])
     except:
         print("  !!! Failed to add album artist")
     try:
@@ -56,10 +58,10 @@ def gpm(track,albumArt,song):
             desc=u'Cover',
             data=open(albumArt,"rb").read()
         )
-    output = "output/" + track["albumArtist"] + "/" + track["album"].translate(str.maketrans('','',"/?<>\\:*|\"")) + "/" + track["title"] + ".mp3"
+    output = "output/" + makeClean(track["artist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"
     dir("output")
-    dir("output/" + track["albumArtist"])
-    dir("output/" + track["albumArtist"] + "/" + track["album"].translate(str.maketrans('','',"/?<>\\:*|\"")) )
+    dir("output/" +  makeClean(track["artist"]))
+    dir("output/" +  makeClean(track["artist"]) + "/" + makeClean(track["album"]) )
     tags.save(song)
     os.rename(song, output)
     os.remove(albumArt)
