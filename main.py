@@ -10,6 +10,8 @@ import time
 
 try:
     os.rmdir("cache")
+except:
+    print("failed to delete cache, probably nothing to worry about")
 os.makedirs("cache")
 
 api = Mobileclient()
