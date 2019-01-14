@@ -41,6 +41,7 @@ def plist(plist):
                 print("  Tagging")
                 gpm(song, "cache/" + song["storeId"] + ".png", "cache/" + song["storeId"] + ".mp3")
         except Exception as e:
+            print(sog)
             print(e)
             print("Waiting a second before continuing")
             time.sleep(2)
