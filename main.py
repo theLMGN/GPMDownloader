@@ -2,7 +2,7 @@
 from gmusicapi import Mobileclient
 import json
 from downloader import download
-from tagger import gpm
+from tagger import gpm,makeClean
 from authentication import *
 from notification import *
 import os
@@ -30,7 +30,7 @@ def plist(plist):
         try:
             song = sog["track"]
             print("[" + str(i) + "/" + str(len(plist["tracks"])) + " " + str(int((i / len(plist["tracks"])) * 100)) + "%] Downloading " +  song["title"] + " by " + song["artist"])
-            if os.path.isfile("output/" + song["albumArtist"] + "/" + song["album"] + "/" + song["title"] + ".mp3"):
+            if os.path.isfile( "output/" + makeClean(track["artist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"):
                 print("Already exists.")
             else:
                 notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])
