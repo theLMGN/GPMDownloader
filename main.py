@@ -34,7 +34,7 @@ def plist(plist):
                 a = 0
             else:
                 print("[" + str(i) + "/" + str(len(plist["tracks"])) + " " + str(int((i / len(plist["tracks"])) * 100)) + "%] Downloading " +  song["title"] + " by " + song["artist"])
-                notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])
+                #notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])
                 download(api.get_stream_url(song["storeId"]),"cache/" + song["storeId"] + ".mp3")
                 print("  Downloading album art")
                 download(song["albumArtRef"][0]["url"], "cache/" + song["storeId"] + ".png")
