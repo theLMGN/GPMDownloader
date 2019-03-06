@@ -20,6 +20,12 @@ api = Mobileclient()
 playlistName = PLAYLISTNAME
 logged_in = api.login(GPMEMAIL,GPMPASSWORD,ANDROIDID)
 
+if api.is_subscribed:
+    print("you have GPM all access, the app will work fine!")
+else:
+    print("!! ERROR !!: a paid GPM subscription is required to use this app")
+    raise Exception("a paid GPM subscription is required to use this app")
+
 notify("Starting","Downloading " + playlistName)
 def plist(plist):
     startTime = time.time()
