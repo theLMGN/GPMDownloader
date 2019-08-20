@@ -8,7 +8,7 @@ def makeClean(path):
 def dir(folder):
     if not os.path.exists(folder):
         os.makedirs(folder)
-def gpm(track,albumArt,song):
+def tagGPM(track,albumArt,song):
     tags = MP3(song)
     try:
         tags.add_tags()

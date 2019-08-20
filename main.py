@@ -2,7 +2,7 @@
 from gmusicapi import Mobileclient
 import json
 from downloader import download
-from tagger import gpm,makeClean
+from tagger import tagGPM,makeClean
 from authentication import *
 import os
 import shutil
@@ -23,6 +23,12 @@ if api.is_subscribed:
 else:
     print("!! WARN !!: a paid GPM subscription is recommended.")
 
+library = []
+
+if DOWNLOADLIBRARY:
+    print("Downloading list of songs in library, this may take a while!")
+    library = api.get_all_songs()
+    print(f"Downloaded list of {len(library)} songs in library")
 
 
 
@@ -33,17 +39,28 @@ def plist(plist):
     for sog in plist["tracks"]:
         i = i + 1
         try:
-            song = sog["track"]
-            track = sog["track"]
-            if os.path.isfile( "output/" + makeClean(track["albumArtist"]) + "/" + makeClean(track["album"]) + "/" + makeClean(track["title"]) + ".mp3"):
+            song = {}
+            if sog["trackId"].startswith('T'):
+                song = sog["track"]
+                song["trackId"] = song["storeId"]
+            else:
+                found = False
+                for s in library:
+                    if sog["trackId"] == s["id"]:
+                        found = True
+                        song = s
+                        song["trackId"] = sog["trackId"]
+                if not found:
+                    raise Exception("Song not found in library")
+            if os.path.isfile( "output/" + makeClean(song["albumArtist"]) + "/" + makeClean(song["album"]) + "/" + makeClean(song["title"]) + ".mp3"):
                 a = 0
             else:
                 print("[" + str(i) + "/" + str(len(plist["tracks"])) + " " + str(int((i / len(plist["tracks"])) * 100)) + "%] Downloading " +  song["title"] + " by " + song["artist"])
-                download(api.get_stream_url(song["storeId"]),"cache/" + song["storeId"] + ".mp3")
+                download(api.get_stream_url(song["trackId"]),"cache/" + song["trackId"] + ".mp3")
                 print("  Downloading album art")
-                download(song["albumArtRef"][0]["url"], "cache/" + song["storeId"] + ".png")
+                download(song["albumArtRef"][0]["url"], "cache/" + song["trackId"] + ".png")
                 print("  Tagging")
-                gpm(song, "cache/" + song["storeId"] + ".png", "cache/" + song["storeId"] + ".mp3")
+                tagGPM(song, "cache/" + song["trackId"] + ".png", "cache/" + song["trackId"] + ".mp3")
         except Exception as e:
             print(sog)
             print(e)
