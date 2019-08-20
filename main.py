@@ -4,7 +4,6 @@ import json
 from downloader import download
 from tagger import gpm,makeClean
 from authentication import *
-from notification import *
 import os
 import shutil
 import time
@@ -17,16 +16,16 @@ except Exception as e:
 os.makedirs("cache")
 
 api = Mobileclient()
-playlistName = PLAYLISTNAME
 logged_in = api.login(GPMEMAIL,GPMPASSWORD,ANDROIDID)
 
 if api.is_subscribed:
     print("you have GPM all access, the app will work fine!")
 else:
-    print("!! ERROR !!: a paid GPM subscription is required to use this app")
-    raise Exception("a paid GPM subscription is required to use this app")
+    print("!! WARN !!: a paid GPM subscription is recommended.")
 
-notify("Starting","Downloading " + playlistName)
+
+
+
 def plist(plist):
     startTime = time.time()
     print("Starting on " + plist["name"])
@@ -40,7 +39,6 @@ def plist(plist):
                 a = 0
             else:
                 print("[" + str(i) + "/" + str(len(plist["tracks"])) + " " + str(int((i / len(plist["tracks"])) * 100)) + "%] Downloading " +  song["title"] + " by " + song["artist"])
-                #notify(str(int((i / len(plist["tracks"])) * 100)) + " Downloaded","Downloading " +  song["title"] + " by " + song["artist"])
                 download(api.get_stream_url(song["storeId"]),"cache/" + song["storeId"] + ".mp3")
                 print("  Downloading album art")
                 download(song["albumArtRef"][0]["url"], "cache/" + song["storeId"] + ".png")
@@ -51,11 +49,10 @@ def plist(plist):
             print(e)
             print("Waiting a second before continuing")
             time.sleep(2)
-    notify("Done downloading","Downloaded " + str(i) + " tracks in " + str(time.time() - startTime) + "s")
         
         
 
 playlist = api.get_all_user_playlist_contents()
 for val in playlist:
-    if val["name"] == playlistName:
+    if val["name"] == PLAYLISTNAME:
         plist(val)
